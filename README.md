@@ -1,18 +1,18 @@
 # DevOps Platform Project
 
-Plataforma de automação cloud-native construída do zero para demonstrar práticas de Platform Engineering: Infrastructure as Code, CI/CD, containers orquestrados e observabilidade — provisionada no Microsoft Azure.
+Cloud-native automation platform built from scratch to showcase Platform Engineering practices: Infrastructure as Code, CI/CD, orchestrated containers, and observability — deployed on Microsoft Azure.
 
 ## Stack
 
-| Categoria       | Ferramenta                          |
+| Category        | Tools                                |
 |-----------------|--------------------------------------|
 | IaC             | Terraform                            |
 | CI/CD           | GitHub Actions                       |
 | Containers      | Docker, Kubernetes (AKS), Helm       |
-| Observabilidade | Prometheus, Grafana                  |
+| Observability   | Prometheus, Grafana                  |
 | Cloud           | Microsoft Azure                      |
 
-## Arquitetura
+## Architecture
 
 \`\`\`
 GitHub Actions (CI/CD)
@@ -30,16 +30,16 @@ Azure Kubernetes Service (AKS) <--- Helm chart deploy
   Prometheus + Grafana (observability)
 \`\`\`
 
-## Como rodar localmente
+## How to run locally
 
-### Pré-requisitos
+### Prerequisites
 
 - Terraform >= 1.6
 - Azure CLI autenticado (\`az login\`)
 - Docker Desktop
 - kubectl
 
-### Provisionando a infraestrutura
+### Provisioning the infrastructure
 
 \`\`\`bash
 cd terraform/environments/dev
@@ -48,13 +48,13 @@ terraform plan
 terraform apply
 \`\`\`
 
-### Destruindo a infraestrutura (evitar custos)
+### Destroying the infrastructure (avoiding costs)
 
 \`\`\`bash
 terraform destroy
 \`\`\`
 
-## Status do projeto
+## Project status
 
 - [x] Estrutura do repositório
 - [x] Terraform: Resource Group + Azure Container Registry
@@ -64,7 +64,7 @@ terraform destroy
 - [ ] Deploy via Helm no AKS
 - [ ] Observabilidade com Prometheus + Grafana
 
-## Autor
+## Author
 
 Felipe Daher de Queiroz — Cloud Infrastructure & Information Security Specialist
 EOF
