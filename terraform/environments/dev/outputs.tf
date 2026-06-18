@@ -1,14 +1,19 @@
 output "resource_group_name" {
-  description = "Nome do Resource Group criado"
+  description = "Name of the created Resource Group"
   value       = module.resource_group.name
 }
 
 output "acr_login_server" {
-  description = "Endereço do Container Registry (usado no docker login / push)"
+  description = "Container Registry address (used for docker login / push)"
   value       = module.acr.login_server
 }
 
 output "acr_name" {
-  description = "Nome do ACR criado"
+  description = "Name of the created ACR"
   value       = module.acr.name
+}
+
+output "aks_cluster_name" {
+  description = "Name of the created AKS cluster"
+  value       = module.aks.cluster_name
 }
