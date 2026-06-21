@@ -1,0 +1,38 @@
+# Default values for devops-platform-app.
+# Override any of these at install time with: helm install ... --set key=value
+# or with a separate values file: helm install ... -f my-values.yaml
+
+replicaCount: 1
+
+image:
+  repository: acrdevopsdaherplatform.azurecr.io/devops-platform-app
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+# Kept deliberately small — this is a portfolio demo app, not a
+# production workload. Real services would tune these based on
+# actual observed usage (which is exactly what Phase 3's Prometheus/
+# Grafana setup will help measure).
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+# Wired to the same /healthz and /readyz endpoints built into the app.
+livenessProbe:
+  path: /healthz
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  path: /readyz
+  initialDelaySeconds: 5
+  periodSeconds: 10
