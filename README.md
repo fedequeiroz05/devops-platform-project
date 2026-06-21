@@ -54,15 +54,15 @@ terraform apply
 terraform destroy
 \`\`\`
 
-## Project status
+## Project Status
 
-- [x] Estrutura do repositório
+- [x] Repository structure
 - [x] Terraform: Resource Group + Azure Container Registry
-- [ ] Terraform: AKS (Azure Kubernetes Service)
-- [ ] Aplicação containerizada
-- [ ] Pipeline CI/CD com GitHub Actions
-- [ ] Deploy via Helm no AKS
-- [ ] Observabilidade com Prometheus + Grafana
+- [x] Terraform: AKS (Azure Kubernetes Service)
+- [x] Containerized application (multi-stage Docker build, non-root user, health/readiness probes)
+- [x] Helm chart — deployed and verified end-to-end on AKS
+- [ ] CI/CD pipeline with GitHub Actions
+- [ ] Observability with Prometheus + Grafana
 
 ## Author
 
