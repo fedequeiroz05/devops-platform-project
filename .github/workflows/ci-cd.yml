@@ -1,0 +1,82 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+permissions:
+  id-token: write  # required for OIDC token request
+  contents: read
+
+env:
+  ACR_NAME: acrdevopsdaherplatform
+  ACR_LOGIN_SERVER: acrdevopsdaherplatform.azurecr.io
+  IMAGE_NAME: devops-platform-app
+  AKS_CLUSTER: aks-devopsplatform-dev
+  RESOURCE_GROUP: rg-devopsplatform-dev
+  HELM_RELEASE: devops-platform-app
+  HELM_CHART_PATH: ./helm/app-chart
+
+jobs:
+  build-and-deploy:
+    name: Build, Push and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Authenticate to Azure via OIDC — no secrets, no passwords.
+      # GitHub proves its identity with a short-lived token; Azure trusts
+      # it because of the federated credential we set up earlier.
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # 3. Build the Docker image and push it directly to ACR.
+      # Using the commit SHA as the image tag means every push is
+      # uniquely traceable back to the exact code that produced it.
+      - name: Build and push image to ACR
+        run: |
+          az acr build \
+            --registry ${{ env.ACR_NAME }} \
+            --image ${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --image ${{ env.IMAGE_NAME }}:latest \
+            --file ./app/Dockerfile \
+            ./app
+
+      # 4. Install kubectl so we can interact with AKS in later steps.
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      # 5. Install Helm
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      # 6. Get AKS credentials so kubectl/helm can reach the cluster.
+      - name: Get AKS credentials
+        run: |
+          az aks get-credentials \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --name ${{ env.AKS_CLUSTER }} \
+            --overwrite-existing
+
+      # 7. Deploy (or upgrade) the Helm release on AKS.
+      # --install means "create if not exists, upgrade if already there"
+      # --atomic means "roll back automatically if the deploy fails"
+      # --wait means "don't mark as success until pods are actually Running"
+      - name: Helm upgrade / install
+        run: |
+          helm upgrade ${{ env.HELM_RELEASE }} ${{ env.HELM_CHART_PATH }} \
+            --install \
+            --atomic \
+            --wait \
+            --timeout 5m \
+            --set image.repository=${{ env.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }}
