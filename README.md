@@ -61,7 +61,7 @@ terraform destroy
 - [x] Terraform: AKS (Azure Kubernetes Service)
 - [x] Containerized application (multi-stage Docker build, non-root user, health/readiness probes)
 - [x] Helm chart — deployed and verified end-to-end on AKS
-- [ ] CI/CD pipeline with GitHub Actions
+- [x] CI/CD pipeline with GitHub Actions (OIDC auth, az acr build, helm upgrade)
 - [ ] Observability with Prometheus + Grafana
 
 ## Author
