@@ -39,6 +39,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Set Azure subscription
+        run: az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       # 3. Build the Docker image and push it directly to ACR.
       # Using the commit SHA as the image tag means every push is
       # uniquely traceable back to the exact code that produced it.
