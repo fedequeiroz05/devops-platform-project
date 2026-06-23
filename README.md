@@ -62,9 +62,9 @@ terraform destroy
 - [x] Containerized application (multi-stage Docker build, non-root user, health/readiness probes)
 - [x] Helm chart — deployed and verified end-to-end on AKS
 - [x] CI/CD pipeline with GitHub Actions (OIDC auth, az acr build, helm upgrade)
-- [ ] Observability with Prometheus + Grafana
+- [x] Observability with Prometheus + Grafana (kube-prometheus-stack, live pod metrics)
 
 ## Author
 
-Felipe Daher de Queiroz — Cloud Infrastructure & Information Security Specialist
+Felipe Daher de Queiroz — Cloud Infrastructure & DevOps Engineer
 EOF
