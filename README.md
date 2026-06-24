@@ -67,4 +67,5 @@ terraform destroy
 ## Author
 
 Felipe Daher de Queiroz — Cloud Infrastructure & DevOps Engineer
+
 EOF
